@@ -6,7 +6,7 @@ import cors from 'cors'
 import bodyParser from 'body-parser'
 import moment from 'moment'
 
-// Crate a express application
+// Create a express application
 let app    = express()
 app.use(cors())
 app.use(bodyParser.json())
@@ -16,10 +16,10 @@ let server = http.createServer(app)
 let io     = require('socket.io')(server)
 
 const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'Kaffesump86',
-  database: 'mtg-db'
+  host: 'db4free.net:3306',
+  user: 'walraz',
+  password: 'ninja1234',
+  database: 'walraz_dev_db'
 })
 
 // MySQL connection
