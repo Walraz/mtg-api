@@ -16,7 +16,7 @@ let server = http.createServer(app)
 let io     = require('socket.io')(server)
 
 const connection = mysql.createConnection({
-  host: 'db4free.net:3306',
+  host: 'db4free.net',
   user: 'walraz',
   password: 'ninja1234',
   database: 'walraz_dev_db'
@@ -32,7 +32,7 @@ connection.connect(function(err){
 routes(app, connection, moment, io)
 
 // Set default server port
-const PORT = process.env.PORT || 3002
+let PORT = process.env.PORT || 3002
 
 io.on('connection', socket => {
   console.log('a user connected')
