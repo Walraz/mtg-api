@@ -1,10 +1,10 @@
-import express from 'express'
-import http from 'http'
-import routes from './routes/routes'
-import mysql from 'mysql'
-import cors from 'cors'
-import bodyParser from 'body-parser'
-import moment from 'moment'
+let express    = require('express')
+let http       = require('http')
+let routes     = require('./routes/routes')
+let mysql      = require('mysql')
+let cors       = require('cors')
+let bodyParser = require('body-parser')
+let moment     = require('moment')
 
 // Create a express application
 let app    = express()
@@ -32,7 +32,7 @@ connection.connect(function(err){
 routes(app, connection, moment, io)
 
 // Set default server port
-let PORT = process.env.PORT || 3002
+const PORT = process.env.PORT || 3002
 
 io.on('connection', socket => {
   console.log('a user connected')
