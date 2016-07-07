@@ -14,7 +14,9 @@ app.use(bodyParser.json())
 // Create HTTP server and websocket
 var server = http.createServer(app)
 var io     = require('socket.io')(server)
-io.set('origins', 'http://magictg-client.azurewebsites.net:80');
+io.set('transports', ['websocket', 'xhr-polling', 'jsonp-polling', 'htmlfile', 'flashsocket'])
+    io.set('origins', '*:*')
+
 var connection = mysql.createConnection({
   host: 'db4free.net',
   user: 'walraz',
