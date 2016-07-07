@@ -35,6 +35,7 @@ var PORT = process.env.PORT || 3002
 
 io.on('connection', function(socket) {
   console.log('a user connected')
+  console.log('Socket id: ' + socket.id)
   socket.on('disconnect', function() {
     console.log('user disconnected')
   })
