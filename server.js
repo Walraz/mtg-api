@@ -1,7 +1,8 @@
 var express    = require('express')
 var http       = require('http')
 var routes     = require('./routes/routes')
-var mysql      = require('mysql')
+//var mysql      = require('mysql')
+var mysql      = require('mysql2')
 var cors       = require('cors')
 var bodyParser = require('body-parser')
 var moment     = require('moment')
@@ -19,12 +20,6 @@ var connection = mysql.createConnection({
   user: 'walraz',
   password: 'ninja1234',
   database: 'walraz_dev_db'
-})
-
-// MySQL connection
-connection.connect(function(err){
-  if(err) throw err
-  console.log("Database is connected ... \n\n")
 })
 
 // Bootstrap routes
