@@ -37,6 +37,7 @@ io.on('connection', function(socket) {
   console.log('a user connected')
   socket.on('disconnect', function() {
     console.log('user disconnected')
+    connection.end()
   })
   socket.on('created match', function(gameId) {
     console.log(gameId)
