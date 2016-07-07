@@ -21,12 +21,6 @@ var connection = mysql.createConnection({
   database: 'walraz_dev_db'
 })
 
-// MySQL connection
-connection.connect(function(err){
-  if(err) throw err
-  console.log("Database is connected ... \n\n")
-})
-
 // Bootstrap routes
 routes(app, connection, moment, io)
 
@@ -37,7 +31,6 @@ io.on('connection', function(socket) {
   console.log('a user connected')
   socket.on('disconnect', function() {
     console.log('user disconnected')
-    connection.end()
   })
   socket.on('created match', function(gameId) {
     console.log(gameId)
