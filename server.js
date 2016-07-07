@@ -1,21 +1,21 @@
-let express    = require('express')
-let http       = require('http')
-let routes     = require('./routes/routes')
-let mysql      = require('mysql')
-let cors       = require('cors')
-let bodyParser = require('body-parser')
-let moment     = require('moment')
+var express    = require('express')
+var http       = require('http')
+var routes     = require('./routes/routes')
+var mysql      = require('mysql')
+var cors       = require('cors')
+var bodyParser = require('body-parser')
+var moment     = require('moment')
 
 // Create a express application
-let app    = express()
+var app    = express()
 app.use(cors())
 app.use(bodyParser.json())
 
 // Create HTTP server and websocket
-let server = http.createServer(app)
-let io     = require('socket.io')(server)
+var server = http.createServer(app)
+var io     = require('socket.io')(server)
 
-const connection = mysql.createConnection({
+var connection = mysql.createConnection({
   host: 'db4free.net',
   user: 'walraz',
   password: 'ninja1234',
@@ -32,20 +32,20 @@ connection.connect(function(err){
 routes(app, connection, moment, io)
 
 // Set default server port
-const PORT = process.env.PORT || 3002
+var PORT = process.env.PORT || 3002
 
-io.on('connection', socket => {
+io.on('connection', function(socket) {
   console.log('a user connected')
-  socket.on('disconnect', () => {
+  socket.on('disconnect', function() {
     console.log('user disconnected')
   })
-  socket.on('created match', (gameId) => {
+  socket.on('created match', function(gameId) {
     console.log(gameId)
     console.log('Created game: ' + gameId)
     socket.join(gameId)
   })
-  socket.on('joined match', (id) => {
-    let gameId = 'GameId_' + id
+  socket.on('joined match', function(id) {
+    var gameId = 'GameId_' + id
     console.log('Joined game: ' + gameId)
     socket.join(gameId)
     io.sockets.in(gameId).emit('start match', id)
@@ -53,6 +53,6 @@ io.on('connection', socket => {
 })
 
 // Start server
-server.listen(PORT, () => {
+server.listen(PORT, function() {
   console.log(`Listening on: http://localhost:${PORT}`)
 })

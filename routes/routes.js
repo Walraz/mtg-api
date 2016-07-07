@@ -1,6 +1,6 @@
-module.exports = (app, connection, moment, io) => {
+module.exports = function(app, connection, moment, io) {
 
-  app.get('/1/mtg-games', (req, res) => {
+  app.get('/1/mtg-games', function(req, res) {
     connection.query('SELECT * from mtg_games', function(err, rows, fields) {
     if(!err) {
       res.send(rows)
@@ -11,7 +11,7 @@ module.exports = (app, connection, moment, io) => {
     })
   })
 
-  app.post('/1/mtg-games', (req, res) => {
+  app.post('/1/mtg-games', function(req, res) {
     connection.query('INSERT INTO mtg_games SET ?', req.body, function(err, rows, fields) {
     if(!err) {
       connection.query('SELECT * FROM mtg_games WHERE Id = ?', [rows.insertId], function(err, rows, fields) {
@@ -30,7 +30,7 @@ module.exports = (app, connection, moment, io) => {
     })
   })
 
-  app.put('/1/mtg-games', (req, res) => {
+  app.put('/1/mtg-games', function(req, res) {
     connection.query('UPDATE mtg_games SET Game_On = ?, Opponents = ? WHERE Id = ?', [req.body.Game_On, req.body.Opponents, req.body.Id], function(err, rows, fields) {
     if(!err) {
       io.emit('join match', req.body)
