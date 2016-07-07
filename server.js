@@ -21,6 +21,12 @@ var connection = mysql.createConnection({
   database: 'walraz_dev_db'
 })
 
+// MySQL connection
+connection.connect(function(err){
+  if(err) throw err
+  console.log("Database is connected ... \n\n")
+})
+
 // Bootstrap routes
 routes(app, connection, moment, io)
 
