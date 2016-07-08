@@ -1,7 +1,7 @@
 var express    = require('express')
 var http       = require('http')
 var routes     = require('./routes/routes')
-//var mysql      = require('mysql')
+var net      = require('net-socket')
 var mysql      = require('mysql2')
 var cors       = require('cors')
 var bodyParser = require('body-parser')
@@ -15,15 +15,21 @@ app.use(bodyParser.json())
 // Create HTTP server and websocket
 var server = http.createServer(app)
 var io     = require('socket.io')(server)
-var connection = mysql.createConnection({
+var pool = mysql.createPool({
+  connectionLimit: 100,
   host: 'db4free.net',
   user: 'walraz',
   password: 'ninja1234',
-  database: 'walraz_dev_db'
+  database: 'walraz_dev_db',
+  stream: function(opts) {
+    var s = net.connect(opts.config.port, opts.config.host);
+    s.setKeepAlive(true);
+    return s;
+  }
 })
 
 // Bootstrap routes
-routes(app, connection, moment, io)
+routes(app, pool, moment, io)
 
 // Set default server port
 var PORT = process.env.PORT || 3002
