@@ -8,6 +8,7 @@ module.exports = function(app, pool, moment, io) {
           var data = rows
           data.forEach(function(row) {
             var localTime  = moment.utc(row.Time_Created).toDate();
+            console.log(localTime)
             row.Time_Created = moment(localTime).format('YYYY-MM-DD HH:mm:ss')
           })
           res.send(data)
