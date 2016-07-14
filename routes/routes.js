@@ -7,7 +7,8 @@ module.exports = function(app, pool, moment, io) {
         if(!err) {
           var data = rows
           data.forEach(function(row) {
-            row.Time_Created = moment(row.Time_Created).format('YYYY-MM-DD HH:mm:ss')
+            var localTime  = moment.utc(row.Time_Created).toDate();
+            row.Time_Created = moment(localTime).format('YYYY-MM-DD HH:mm:ss')
           })
           res.send(data)
         } else {
@@ -26,7 +27,8 @@ module.exports = function(app, pool, moment, io) {
           connection.release()
           if(!err) {
             var data = rows[0]
-            data.Time_Created = moment(data.Time_Created).format('YYYY-MM-DD HH:mm:ss')
+            var localTime  = moment.utc(data.Time_Created).toDate();
+            data.Time_Created = moment(localTime).format('YYYY-MM-DD HH:mm:ss')
             io.emit('create match', data)
             res.send(data)
           } else {
