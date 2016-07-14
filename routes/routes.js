@@ -26,7 +26,7 @@ module.exports = function(app, pool, moment, io) {
           connection.release()
           if(!err) {
             var data = rows[0]
-            data.Time_Created = moment.utc(data.Time_Created).toDate()
+            data.Time_Created = moment(data.Time_Created).format('YYYY-MM-DD HH:mm:ss')
             io.emit('create match', data)
             res.send(data)
           } else {
