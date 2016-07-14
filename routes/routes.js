@@ -5,7 +5,11 @@ module.exports = function(app, pool, moment, io) {
       connection.query('SELECT * from mtg_games', function(err, rows, fields) {
         connection.release()
         if(!err) {
-          res.send(rows)
+          let data = rows
+          data.forEach(function(row) {
+            row.Time_Created = moment(row.Time_Created).format('YYYY-MM-DD HH:mm:ss')
+          })
+          res.send(data)
         } else {
           console.log(err)
           res.sendStatus(500)
@@ -16,13 +20,16 @@ module.exports = function(app, pool, moment, io) {
 
   app.post('/1/mtg-games', function(req, res) {
     pool.getConnection(function(err, connection) {
+      req.body.Time_Created = moment().format('YYYY-MM-DD HH:mm:ss')
       connection.query('INSERT INTO mtg_games SET ?', req.body, function(err, rows, fields) {
       if(!err) {
         connection.query('SELECT * FROM mtg_games WHERE Id = ?', [rows.insertId], function(err, rows, fields) {
           connection.release()
           if(!err) {
-            io.emit('create match', rows[0])
-            res.send(rows[0])
+            let data = rows[0]
+            data.Time_Created = moment(data.Time_Created).format('YYYY-MM-DD HH:mm:ss')
+            io.emit('create match', data)
+            res.send(data)
           } else {
             console.log(err)
             res.sendStatus(500)
