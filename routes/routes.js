@@ -5,7 +5,7 @@ module.exports = function(app, pool, moment, io) {
       connection.query('SELECT * from mtg_games', function(err, rows, fields) {
         connection.release()
         if(!err) {
-          let data = rows
+          var data = rows
           data.forEach(function(row) {
             row.Time_Created = moment(row.Time_Created).format('YYYY-MM-DD HH:mm:ss')
           })
@@ -26,7 +26,7 @@ module.exports = function(app, pool, moment, io) {
         connection.query('SELECT * FROM mtg_games WHERE Id = ?', [rows.insertId], function(err, rows, fields) {
           connection.release()
           if(!err) {
-            let data = rows[0]
+            var data = rows[0]
             data.Time_Created = moment(data.Time_Created).format('YYYY-MM-DD HH:mm:ss')
             io.emit('create match', data)
             res.send(data)
