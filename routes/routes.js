@@ -20,7 +20,7 @@ module.exports = function(app, pool, moment, io) {
 
   app.post('/1/mtg-games', function(req, res) {
     pool.getConnection(function(err, connection) {
-      req.body.Time_Created = moment().format('YYYY-MM-DD HH:mm:ss')
+      req.body.Time_Created = moment.utc().format('YYYY-MM-DD HH:mm:ss')
       connection.query('INSERT INTO mtg_games SET ?', req.body, function(err, rows, fields) {
       if(!err) {
         connection.query('SELECT * FROM mtg_games WHERE Id = ?', [rows.insertId], function(err, rows, fields) {
