@@ -8,7 +8,7 @@ module.exports = function(app, pool, moment, io) {
           var data = rows
           data.forEach(function(row) {
             var utc = moment(row.Time_Created).format('YYYY-MM-DD HH:mm:ss+00:00')
-            row.Time_Created = moment(utc).format('YYYY-MM-DD HH:mm:ss')
+            row.Time_Created = moment(utc).format('YYYY-MM-DD HH:mm:ss Z')
           })
           res.send(data)
         } else {
