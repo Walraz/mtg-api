@@ -7,9 +7,8 @@ module.exports = function(app, pool, moment, io) {
         if(!err) {
           var data = rows
           data.forEach(function(row) {
-            var localTime  = moment.utc(row.Time_Created).toDate();
-            console.log(localTime)
-            row.Time_Created = moment(localTime).format('YYYY-MM-DD HH:mm:ss')
+            var utc = moment(row.Time_Created).format('YYYY-MM-DD HH:mm:ss+00:00')
+            row.Time_Created = moment(utc).format('YYYY-MM-DD HH:mm:ss')
           })
           res.send(data)
         } else {
@@ -22,14 +21,15 @@ module.exports = function(app, pool, moment, io) {
 
   app.post('/1/mtg-games', function(req, res) {
     pool.getConnection(function(err, connection) {
+      req.body.Time_Created = moment.utc().format('YYYY-MM-DD HH:mm:ss')
       connection.query('INSERT INTO mtg_games SET ?', req.body, function(err, rows, fields) {
       if(!err) {
         connection.query('SELECT * FROM mtg_games WHERE Id = ?', [rows.insertId], function(err, rows, fields) {
           connection.release()
           if(!err) {
             var data = rows[0]
-            var localTime  = moment.utc(data.Time_Created).toDate();
-            data.Time_Created = moment(localTime).format('YYYY-MM-DD HH:mm:ss')
+            var utc = moment(data.Time_Created).format('YYYY-MM-DD HH:mm:ss+00:00')
+            data.Time_Created = moment(utc).format('YYYY-MM-DD HH:mm:ss')
             io.emit('create match', data)
             res.send(data)
           } else {
