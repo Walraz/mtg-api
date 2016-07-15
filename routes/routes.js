@@ -6,9 +6,6 @@ module.exports = function(app, pool, moment, io) {
         connection.release()
         if(!err) {
           var data = rows
-          data.forEach(function(row) {
-            row.Time_Created = moment(row.Time_Created).format('YYYY-MM-DD HH:mm:ss+00:00')
-          })
           res.send(data)
         } else {
           console.log(err)
@@ -27,7 +24,6 @@ module.exports = function(app, pool, moment, io) {
           connection.release()
           if(!err) {
             var data = rows[0]
-            data.Time_Created = moment(data.Time_Created).format('YYYY-MM-DD HH:mm:ss+00:00')
             io.emit('create match', data)
             res.send(data)
           } else {
@@ -45,7 +41,7 @@ module.exports = function(app, pool, moment, io) {
 
   app.put('/1/mtg-games', function(req, res) {
     pool.getConnection(function(err, connection) {
-      connection.query('UPDATE mtg_games SET Game_On = ?, Opponents = ? WHERE Id = ?', [req.body.Game_On, req.body.Opponents, req.body.Id], function(err, rows, fields) {
+      connection.query('UPDATE mtg_games SET Game_On = ?, Opponents = ?, Time_Created = ? WHERE Id = ?', [req.body.Game_On, req.body.Opponents, moment.utc(req.body.Time_Created).format('YYYY-MM-DD HH:mm:ss'), req.body.Id], function(err, rows, fields) {
       connection.release()
       if(!err) {
         io.emit('join match', req.body)
