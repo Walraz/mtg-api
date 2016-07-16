@@ -18,6 +18,7 @@ var io     = require('socket.io')(server)
 var pool = mysql.createPool({
   connectionLimit: 100,
   timezone: 'utc',
+  dateStrings: true,
   host: 'db4free.net',
   user: 'walraz',
   password: 'ninja1234',

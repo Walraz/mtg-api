@@ -2,7 +2,7 @@ module.exports = function(app, pool, moment, io) {
 
   app.get('/1/mtg-games', function(req, res) {
     pool.getConnection(function(err, connection) {
-      connection.query('SELECT * from mtg_games WHERE Time_Created >= date_sub(?, interval 1 hour)', [moment.utc().format('YYYY-MM-DD HH:mm:ss')], function(err, rows, fields) {
+      connection.query("SELECT * from mtg_games WHERE Time_Created >= date_sub(?, interval 1 hour)", [moment.utc().format('YYYY-MM-DD HH:mm:ss')], function(err, rows, fields) {
         connection.release()
         if(!err) {
           var data = rows
