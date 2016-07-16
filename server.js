@@ -53,6 +53,10 @@ io.on('connection', function(socket) {
     socket.join(gameId)
     io.sockets.in(gameId).emit('start match', id)
   })
+  socket.on('send message', function(msg) {
+    var gameId = 'GameId_' + msg.id
+    socket.broadcast.to(gameId).emit('get message', msg);
+  })
 })
 
 // Start server
