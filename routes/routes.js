@@ -42,7 +42,7 @@ module.exports = function(app, pool, moment, io) {
 
   app.put('/1/mtg-games', function(req, res) {
     pool.getConnection(function(err, connection) {
-      connection.query('UPDATE mtg_games SET Game_On = ?, Opponents = ? WHERE Id = ?', [req.body.Game_On, req.body.Opponents req.body.Id], function(err, rows, fields) {
+      connection.query('UPDATE mtg_games SET Game_On = ?, Opponents = ? WHERE Id = ?', [req.body.Game_On, req.body.Opponents, req.body.Id], function(err, rows, fields) {
       connection.release()
       if(!err) {
         io.emit('join match', req.body)
